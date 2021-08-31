@@ -1,3 +1,27 @@
+# plutoprimed
+
+plutoprimed is a modified firmware for the PlutoSDR radio transceiver sold by Analog Devices. The modified firmware brings about these two new features:
+
+ * The ability to output a frequency sweep pattern which is generated onboard the embedded FPGA chip. See the `tx_sweep` utility program that can be accessed from command line of the Linux system running on PlutoSDR.
+
+ * Faculties that can relate the timing of a signal on an auxiliary digital input port to the sampling of a RF signal. That is, they can tie a transition on the auxiliary port to a particular sample position in the sample stream of the RF signal. See `sigmf-writer.py`, which is a utility program for creating recordings when triggered by pulse on the auxiliary port. The recordings contain time position of the pulse vis-a-vis the samples recorded.
+
+## Building
+
+The modified firmware needs to be build from the submodules in this repository at the particular revisions. Build the FPGA configuration first by recreating a Vivado project from a TCL script (see the last commit in the `hdl` submodule, this is different from how the FPGA configuration from upstream firmware is built). Then put the resulting bitstream into `build/` as `build/system_top.bit`, and build the remaining parts of the firmware with `make build/pluto.frm`. The resulting `pluto.frm` file contains the modified firmware, see also upstream documentation.
+
+## Notes on `sigmf-writer.py`
+
+It can run both on a computer to which PlutoSDR is connected and on the Linux system of the PlutoSDR itself (if it's running the plutoprimed firmware variety).
+
+The script outputs a streamed tar archive with the recordings. Attach `tar xv` in a pipeline to create local files. (This can be done after transferring the tar archive stream with ssh from PlutoSDR to another host.)
+
+The produced recordings are in the [SigMF format](https://github.com/gnuradio/sigmf) (which is a work-in-progress specification).
+
+## Final note
+
+Text of the original README from the upstream firmware source repository follows.
+
 # plutosdr-fw
 PlutoSDR Firmware for the [ADALM-PLUTO](https://wiki.analog.com/university/tools/pluto "PlutoSDR Wiki Page") Active Learning Module
 
