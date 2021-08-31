@@ -151,8 +151,8 @@ else
 	unzip -o build/system_top.hdf system_top.bit -d build/sdk/hw_0
 endif
 
-build/system_top.bit: build/sdk/hw_0/system_top.bit
-	cp $< $@
+#build/system_top.bit: build/sdk/hw_0/system_top.bit
+#	cp $< $@
 
 build/boot.bin: build/sdk/fsbl/Release/fsbl.elf build/u-boot.elf
 	@echo img:{[bootloader] $^ } > build/boot.bif
